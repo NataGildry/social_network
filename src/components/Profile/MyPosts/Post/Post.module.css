@@ -1,0 +1,6 @@
+post {
+    color: saddlebrown;
+}
+.post.active {
+    color: darkred;
+}
