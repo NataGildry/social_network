@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import user from './Users.module.css';
 import userPhoto from '../../assets/images/240administrator-male.png';
 import {NavLink} from 'react-router-dom';
@@ -32,28 +32,46 @@ let Users = (props) => {
                        </div>
                        <div>
                            {u.followed
-                               ? <button onClick={() => {
-                                   props.unfollow(u.id)
+                               ? <button disabled={props.followingInProgress
+                                   .some(id => id === u.id)} onClick={() => {
+                                 props.unfollow(u.id);
+                                   // props.toggleFollowingInProgress(true, u.id);
+                                   // usersAPI.unfollow(u.id)
+                                   //     .then(response => {
+                                   //         if (response.data.resultCode === 0) {
+                                   //             props.unfollow(u.id)
+                                   //         }
+                                   //         props.toggleFollowingInProgress(false, u.id);
+                                   //     });
                                }}>Unfollow</button>
-                               : <button onClick={() => {
-                                   props.follow(u.id)
+                               : <button disabled={props.followingInProgress
+                                   .some(id => id === u.id)} onClick={() => {
+                                   props.follow(u.id);
+                                   // props.toggleFollowingInProgress(true, u.id);
+                                   // usersAPI.follow(u.id)
+                                   //     .then(response => {
+                                   //         if (response.data.resultCode === 0) {
+                                   //             props.follow(u.id)
+                                   //         }
+                                   //         props.toggleFollowingInProgress(false, u.id);
+                                   //     });
                                }}>Follow</button>}
-                       </div>
-                   </span>
-                    <span>
-                       <span>
-                           <div>{u.name}</div>
-                           <div>{u.status}</div>
-                       </span>
-                        <span>
-                           <div>{"u.location.country"}</div>
-                           <div>{"u.location.city"}</div>
-                       </span>
-                   </span>
-                </div>)
-            }
-        </div>
-    )
-};
+                                   </div>
+                                   </span>
+                                   <span>
+                                   <span>
+                                   <div>{u.name}</div>
+                                   <div>{u.status}</div>
+                                   </span>
+                                   <span>
+                                   <div>{"u.location.country"}</div>
+                                   <div>{"u.location.city"}</div>
+                                   </span>
+                                   </span>
+                                   </div>)
+                                   }
+                                   </div>
+                                   )
+                                   };
 
-export default Users;
+                                   export default Users;

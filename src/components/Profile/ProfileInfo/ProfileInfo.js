@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import pi from './ProfileInfo.module.css';
-import Preloader from "../../common/Preloader/Preloader";
+import Preloader from '../../common/Preloader/Preloader';
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
