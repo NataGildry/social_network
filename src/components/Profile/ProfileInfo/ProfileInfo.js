@@ -1,6 +1,7 @@
 import React from 'react';
 import pi from './ProfileInfo.module.css';
 import Preloader from '../../common/Preloader/Preloader';
+import Status from './Status';
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
@@ -8,11 +9,9 @@ const ProfileInfo = (props) => {
     }
     return (
         <div>
-            <div className={pi.image}>
-                <img src="https://media-cdn.tripadvisor.com/media/photo-s/16/ff/b2/f3/ic-5-24.jpg" alt=""/>
-            </div>
             <div className={pi.description_block}>
                 <img src={props.profile.photos.large} alt=""/>
+                <Status status={props.status} updateUserStatus={props.updateUserStatus}/>
                 <div>
                     About me
                     <p>{props.profile.aboutMe}</p>

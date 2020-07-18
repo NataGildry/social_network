@@ -9,6 +9,8 @@ import {
 } from '../../redux/userReducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
+import {compose} from 'redux';
+import {withAuthRedirect} from '../../hoc/withAuthRedirect';
 
 
 class UsersContainer extends Component {
@@ -65,7 +67,7 @@ let mapStateToProps = (state) => {
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
-        followingInProgress:state.usersPage.followingInProgress
+        followingInProgress: state.usersPage.followingInProgress
     }
 };
 // let mapDispatchToProps = (dispatch) => {
@@ -93,11 +95,11 @@ let mapStateToProps = (state) => {
 // };
 
 
-export default connect(mapStateToProps, {
+export default compose(connect(mapStateToProps, {
     follow,
     unfollow,
     setCurrentPage,
     toggleFollowingInProgress,
     getUsers: getUsersThunkCreator
-})(UsersContainer);
+}), withAuthRedirect)(UsersContainer);
 
