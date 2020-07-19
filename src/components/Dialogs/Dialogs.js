@@ -1,28 +1,34 @@
-import React from "react";
+import React from 'react';
 import d from './Dialogs.module.css';
-import DialogItem from "./Dialog/DialogItem";
-import Message from "./Message/Message";
-import {Redirect} from "react-router-dom";
+import DialogItem from './Dialog/DialogItem';
+import Message from './Message/Message';
+import {Redirect} from 'react-router-dom';
+import AddMessageReduxForm from './MessageForm/MessageForm';
 
 const Dialogs = (props) => {
+    //Logic for sending messages to general state(changing general state with each character)
+    // let newMessageBody = props.newMessageBody;
+    //
+    // let sendMessage = () => {
+    //     props.sendMessage();
+    // };
+    // let onNewMessageChange = (e) => {
+    //     let body = e.target.value;
+    //     props.updateNewMessageBody(body);
+    // };
 
     let dialogsElements = props.dialogData.map(dialog =>
-        <DialogItem name={dialog.name}  key={dialog.id} id={dialog.id}/>);
+        <DialogItem name={dialog.name} key={dialog.id} id={dialog.id}/>);
     let messagesElements = props.messageData.map(mess =>
         <Message message={mess.message} key={mess.id} id={mess.id}/>);
 
-    let newMessageBody = props.newMessageBody;
+    const addNewMessage = (values) => {
+        props.sendMessage(values.newMessageBody);
+    };
 
-    let sendMessage = () => {
-         props.sendMessage();
-    };
-    let onNewMessageChange = (e) => {
-        let body = e.target.value;
-        props.updateNewMessageBody(body);
-    };
-   if (!props.isAuth) {
-       return <Redirect to={'/login'}/>
-   }
+    if (!props.isAuth) {
+        return <Redirect to={'/login'}/>
+    }
     return (
         <div>
             <div className={d.dialogs}>
@@ -33,16 +39,8 @@ const Dialogs = (props) => {
                     {messagesElements}
                     <div>
                         New message
-                        <div>
-                    <textarea name="mess"
-                              value={newMessageBody}
-                              onChange={onNewMessageChange}
-                              placeholder='Enter your Message'
-                             />
-                            <div>
-                                <button onClick={sendMessage}>New message</button>
-                            </div>
-                        </div>
+                        <AddMessageReduxForm
+                            onSubmit={addNewMessage}/>
                     </div>
                 </div>
             </div>

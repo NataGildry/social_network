@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import p from './Post.module.css';
 
 const Post =(props) => {

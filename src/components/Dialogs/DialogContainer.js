@@ -1,9 +1,9 @@
-import {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "../../redux/dialogReducer";
-import Dialogs from "./Dialogs";
-import {connect} from "react-redux";
-import React from "react";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {compose} from "redux";
+import {sendMessageActionCreator} from '../../redux/dialogReducer';
+import Dialogs from './Dialogs';
+import {connect} from 'react-redux';
+import React from 'react';
+import {withAuthRedirect} from '../../hoc/withAuthRedirect';
+import {compose} from 'redux';
 
 
 // const DialogsContainer = () => {
@@ -45,12 +45,13 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps =(dispatch) => {
     return {
-        updateNewMessageBody: (body) => {
-            let action = updateNewMessageBodyActionCreator(body);
-            dispatch(action);
-        },
-        sendMessage: () => {
-           dispatch(sendMessageActionCreator());
+        //we used updateNewMessageBody for changing message text with each character
+        // updateNewMessageBody: (body) => {
+        //     let action = updateNewMessageBodyActionCreator(body);
+        //     dispatch(action);
+        // },
+        sendMessage: (newMessageBody) => {
+           dispatch(sendMessageActionCreator(newMessageBody));
         }
     }
 };
