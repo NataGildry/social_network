@@ -11,14 +11,6 @@ const MyPosts = (props) => {
     const addNewPost = (values) => {
         props.addPost(values.newPostText);
     };
-    // let onAddPost = () => {
-    //     props.addPost();
-    // };
-    // let newPostText = props.newPostText;
-    // let onPostChange = (e) => {
-    //     let newText = e.target.value;
-    //     props.updateNewPostText(newText);
-    // };
     return (
         <div className={mp.post_block}>
             <h3>My posts</h3>

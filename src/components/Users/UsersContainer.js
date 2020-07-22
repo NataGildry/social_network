@@ -101,5 +101,5 @@ export default compose(connect(mapStateToProps, {
     setCurrentPage,
     toggleFollowingInProgress,
     getUsers: getUsersThunkCreator
-}), withAuthRedirect)(UsersContainer);
+}))(UsersContainer);
 
