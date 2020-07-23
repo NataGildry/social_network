@@ -43,7 +43,7 @@ let mapStateToProps = (state) => {
     }
 };
 
-let mapDispatchToProps =(dispatch) => {
+let mapDispatchToProps = (dispatch) => {
     return {
         //we used updateNewMessageBody for changing message text with each character
         // updateNewMessageBody: (body) => {
@@ -51,9 +51,9 @@ let mapDispatchToProps =(dispatch) => {
         //     dispatch(action);
         // },
         sendMessage: (newMessageBody) => {
-           dispatch(sendMessageActionCreator(newMessageBody));
+            dispatch(sendMessageActionCreator(newMessageBody));
         }
     }
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect) (Dialogs);
+export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs);
