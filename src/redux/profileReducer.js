@@ -1,9 +1,9 @@
 import {profileAPI, usersAPI} from '../api/api';
 
-const ADD_POST = 'ADD-POST';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
+const ADD_POST = 'social-network/profile/ADD-POST';
+const SET_USER_PROFILE = 'social-network/profile/SET_USER_PROFILE';
+const SET_STATUS = 'social-network/profile/SET_STATUS';
+const DELETE_POST = 'social-network/profile/DELETE_POST';
 
 let initialState = {
     posts: [
@@ -47,26 +47,20 @@ const profileReducer = (state = initialState, action) => {
 export const addPostActionCreator = (newPostText) => ({type: ADD_POST, newPostText});
 export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile});
 export const deletePost = (postId) => ({type: DELETE_POST, postId});
-export const getUserProfile = (userId) => (dispatch) => {
-    usersAPI.getProfile(userId)
-        .then(data => {
+export const getUserProfile = (userId) => async (dispatch) => {
+    let data = await usersAPI.getProfile(userId);
             dispatch(setUserProfile(data));
-        })
 };
 export const setUserStatus = (status) => ({type: SET_STATUS, status});
-export const getUserStatus = (status) => (dispatch) => {
-    profileAPI.getStatus(status)
-        .then(data => {
+export const getUserStatus = (status) => async (dispatch) => {
+    let data = await profileAPI.getStatus(status);
             dispatch(setUserStatus(data));
-        })
 };
-export const updateUserStatus = (status) => (dispatch) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
+export const updateUserStatus = (status) => async (dispatch) => {
+   let response = await profileAPI.updateStatus(status);
             if (response.data.resultCode === 0) {
                 dispatch(setUserStatus(status));
             }
-        })
 };
 
 export default profileReducer;
