@@ -20,20 +20,18 @@ const StatusWithHooks = (props) => {
     };
 
     return (
-        <>
-            {!editMode &&
-            <div>
-                <span onDoubleClick={activateEditMode}>{props.status || "------"}</span>
-            </div>
+        <div>
+            {!editMode && (<div>
+                <b><span onDoubleClick={activateEditMode}>{props.status || "------"}</span></b>
+            </div>)
             }
-            {editMode &&
-            <div>
+            {editMode && (<div>
                 <input onChange={onStatusChange} autoFocus={true}
                        onBlur={deactivateEditMode}
                        value={status}/>
-            </div>
+            </div>)
             }
-        </>
+        </div>
     );
 };
 
