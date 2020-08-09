@@ -29,6 +29,5 @@ export type ProfileType = {
     lookingForAJob: boolean,
     lookingForAJobDescription: boolean,
     fullName: string,
-    contacts: ContactsType,
-    photos: PhotosType
-};
+    contacts: Array<ContactsType>,
+    photos: Array<PhotosType>};

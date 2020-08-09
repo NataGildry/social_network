@@ -1,6 +1,17 @@
-import React, {Component} from 'react';
+import React, {ChangeEvent, Component} from 'react';
 
-class Status extends Component {
+type PropsType = {
+    status: string,
+    updateUserStatus: (newStatus:string) => void,
+
+};
+
+type StateType = {
+    editMode: boolean,
+    status: string
+};
+
+class Status extends Component<PropsType, StateType> {
     state = {
         editMode: false,
         status: this.props.status
@@ -19,13 +30,13 @@ class Status extends Component {
         this.props.updateUserStatus(this.state.status);
     };
 
-    onStatusChange = (e) => {
+    onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             status: e.currentTarget.value
         });
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps:PropsType, prevState: StateType) {
         if (prevProps.status !== this.props.status) {
             this.setState({
                 status: this.props.status

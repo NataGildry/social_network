@@ -102,12 +102,12 @@ type ToggleIsFetchingType = {
     type: typeof TOGGLE_IS_FETCHING,
     isFetching: boolean
 };
-type ToggleFollowingInProgressType = {
-    type: typeof TOGGLE_IS_FOLLOWING_PROGRESS,
-    userId: number,
-    isFetching:boolean
-    //followingInProgress: Array<number>
-};
+// type ToggleFollowingInProgressType = {
+//     type: typeof TOGGLE_IS_FOLLOWING_PROGRESS,
+//     userId: number,
+//     isFetching:boolean
+//     //followingInProgress: Array<number>
+// };
 export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({type: SET_CURRENT_PAGE, currentPage});
 export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountType => ({
     type: SET_TOTAL_USER_COUNT, count: totalUsersCount
@@ -122,12 +122,11 @@ export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingType => (
 //     followingInProgress,
 //     userId
 // });
-export const toggleFollowingInProgress = (isFetching: boolean, userId: number)
-    : ToggleFollowingInProgressType => ({
+export const toggleFollowingInProgress = (isFetching: boolean, userId: number) => ({
     type: TOGGLE_IS_FOLLOWING_PROGRESS,
     isFetching,
     userId
-});
+} as const);
 
 
 
@@ -141,13 +140,19 @@ export const getUsersThunkCreator = (page: number, pageSize: number) => {
         dispatch(setTotalUsersCount(data.totalCount));
     }
 };
-const followUnfollowFlow = async (dispatch: any, userId: number, apiMethod: any, actionCreator: any) => {
+const followUnfollowFlow = async (dispatch: any,
+                                  userId: number,
+                                  apiMethod: any,
+                                  actionCreator: any) => {
     dispatch(toggleFollowingInProgress(true, userId));
     let response = await apiMethod(userId);
+    dispatch(toggleFollowingInProgress(false, userId));
     if (response.data.resultCode === 0) {
         dispatch(actionCreator(userId))
+        return Promise.resolve('Followed / unfollowed')
+    }else{
+        return Promise.reject('Server error')
     }
-    dispatch(toggleFollowingInProgress(false, userId));
 };
 
 export const follow = (userId: number) => {
