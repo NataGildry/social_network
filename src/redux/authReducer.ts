@@ -22,13 +22,13 @@ let initialState = {
     captchaUrl: null as string | null// if null that captcha is not required
 };
 export type InitialStateType = typeof initialState;
-const authReducer = (state = initialState, action: any): InitialStateType => {
+const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case TOGGLE_IS_FETCHING:
-            return {
-                ...state,
-                isFetching: action.isFetching
-            };
+        // case TOGGLE_IS_FETCHING:
+        //     return {
+        //         ...state,
+        //         isFetching: action.isFetching
+        //     };
         case SET_AUTH_USER_DATA:
         case GET_CAPTCHA_URL_SUCCESS:
             return {
@@ -40,7 +40,8 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
     }
 };
 
-type setAuthUserDataActionPayloadType = {
+type ActionsType = setAuthUserDataActionType| getCaptchaUrlSuccessActionType;
+    type setAuthUserDataActionPayloadType = {
     id: number | null,
     email: string | null,
     login: string | null,
@@ -49,6 +50,10 @@ type setAuthUserDataActionPayloadType = {
 type setAuthUserDataActionType = {
     type: typeof SET_AUTH_USER_DATA,
     payload: setAuthUserDataActionPayloadType
+};
+type getCaptchaUrlSuccessActionType = {
+    type: typeof GET_CAPTCHA_URL_SUCCESS,
+    payload: { captchaUrl: string }
 };
 
 export const setAuthUserData = (id: number | null,
@@ -59,10 +64,6 @@ export const setAuthUserData = (id: number | null,
     payload: {id, email, login, isAuth}
 });
 
-type getCaptchaUrlSuccessActionType = {
-    type: typeof GET_CAPTCHA_URL_SUCCESS,
-    payload: { captchaUrl: string }
-};
 export const getCaptchaUrlSuccess = (captchaUrl: string): getCaptchaUrlSuccessActionType => ({
     type: GET_CAPTCHA_URL_SUCCESS,
     payload: {captchaUrl}
