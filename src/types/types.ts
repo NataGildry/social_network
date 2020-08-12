@@ -21,8 +21,7 @@ export type UserType = {
     name: string,
     status: string,
     photos: PhotosType,
-    totalCount: number,
-    error: string
+    followed:boolean
 };
 export type ProfileType = {
     userId: number,
