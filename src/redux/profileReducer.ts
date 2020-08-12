@@ -21,7 +21,7 @@ let initialState = {
 };
 
 export type InitialStateType = typeof initialState;
-const profileReducer = (state = initialState, action: any): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case ADD_POST :
             let newText = action.newPostText;
@@ -47,14 +47,16 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
         case SAVE_PHOTO_SUCCESS :
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos} as ProfileType
+                profile: {...state.profile, photos: action.photos} as any
             };
         default:
             return state;
     }
 };
 
-type AddPostActionCreatorType = {
+type ActionsType = AddPostActionCreatorType | SetUserProfileType | SavePhotoSuccessType | DeletePost |
+    SetUserStatus;
+    type AddPostActionCreatorType = {
     type: typeof ADD_POST,
     newPostText: string
 };
