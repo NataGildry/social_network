@@ -1,9 +1,10 @@
 import {usersAPI} from '../api/api';
 import {updateObjectInArray} from '../utils/helpers/objectHelper';
 import {UserType} from '../types/types';
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
-import {Dispatch} from "redux";
+import {AppStateType} from './redux-store';
+import {Dispatch} from 'redux';
+import {ThunkAction} from 'redux-thunk';
+
 
 const FOLLOW = 'social-network/user/FOLLOW';
 const UNFOLLOW = 'social-network/user/UNFOLLOW';
@@ -135,7 +136,7 @@ export const toggleFollowingInProgress = (isFetching: boolean, userId: number) =
     userId
 } as const);
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType,unknown, ActionsType>;
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>;
 
 export const getUsersThunkCreator = (page: number, pageSize: number): ThunkType => {
     return async (dispatch, getState) => {
