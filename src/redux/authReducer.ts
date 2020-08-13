@@ -84,21 +84,30 @@ export const getAuthUserData = ():ThunkType  => async (dispatch,
         dispatch(setAuthUserData(id, email, login, true));
     }
 };
-export const login = (email: string, password: string, rememberMe: boolean,  captcha: string) =>
+export const login = (email: string, password: string, rememberMe: boolean) =>
     async (dispatch:any,
            getState:any) => {
-        let loginData = await authAPI.login(email, password, rememberMe, captcha);
+        let loginData = await authAPI.login(email, password, rememberMe);
         if (loginData.resultCode === ResultCodeEnum.Success) {
-            await dispatch(getAuthUserData())
-        } else {
-            if (loginData.resultCode === ResultCodeForCaptureEnum.CaptureIsRequired) {
-                await dispatch(getCaptchaUrl());
-            }
-            const message = loginData.messages.length > 0 ? loginData.messages[0]
-                : "Email or password is not correct";
-            dispatch(stopSubmit("login", {_error: message}));
-        }
-    };
+            await dispatch(getAuthUserData());
+            export const login = (email: string,
+                                  password: string,
+                                  rememberMe: boolean,
+                                  captcha: string) =>
+                async (dispatch:any,
+                       getState:any) => {
+                    let loginData = await authAPI.login(email, password, rememberMe, captcha);
+                    if (loginData.resultCode === ResultCodeEnum.Success) {
+                        await dispatch(getAuthUserData())
+                    } else {
+                        if (loginData.resultCode === ResultCodeForCaptureEnum.CaptureIsRequired) {
+                            await dispatch(getCaptchaUrl());
+                        }
+                        const message = loginData.messages.length > 0 ? loginData.messages[0]
+                            : "Email or password is not correct";
+                        dispatch(stopSubmit("login", {_error: message}));
+                    }
+                };
 export const getCaptchaUrl = ():ThunkType => async (dispatch,
                                                     getState) => {
     const response = await securityAPI.getCaptchaUrl();
