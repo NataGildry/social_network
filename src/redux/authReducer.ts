@@ -89,15 +89,6 @@ export const login = (email: string, password: string, rememberMe: boolean) =>
            getState:any) => {
         let loginData = await authAPI.login(email, password, rememberMe);
         if (loginData.resultCode === ResultCodeEnum.Success) {
-            await dispatch(getAuthUserData());
-            export const login = (email: string,
-                                  password: string,
-                                  rememberMe: boolean,
-                                  captcha: string) =>
-                async (dispatch:any,
-                       getState:any) => {
-                    let loginData = await authAPI.login(email, password, rememberMe, captcha);
-                    if (loginData.resultCode === ResultCodeEnum.Success) {
                         await dispatch(getAuthUserData())
                     } else {
                         if (loginData.resultCode === ResultCodeForCaptureEnum.CaptureIsRequired) {
@@ -121,3 +112,5 @@ export const logout = (): ThunkType => async (dispatch, getState) => {
     }
 };
 export default authReducer;
+
+
