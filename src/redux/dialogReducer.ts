@@ -26,7 +26,8 @@ let initialState = {
     ] as Array<messageDataType>
 };
 
-const dialogReducer = (state = initialState, action: any): InitialStateType => {
+const dialogReducer = (state = initialState,
+                       action: ActionsType): InitialStateType => {
     switch (action.type) {
         // case UPDATE_NEW_MESSAGE_BODY :
         //    return {
@@ -43,10 +44,12 @@ const dialogReducer = (state = initialState, action: any): InitialStateType => {
             return state;
     }
 };
+type ActionsType = sendMessageActionCreatorType;
 type sendMessageActionCreatorType = {
     type: typeof SEND_MESSAGE,
     newMessageBody: string
 };
+
 export const sendMessageActionCreator = (newMessageBody: string): sendMessageActionCreatorType => ({
     type: SEND_MESSAGE,
     newMessageBody
