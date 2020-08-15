@@ -1,15 +1,6 @@
 //const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY';
-const SEND_MESSAGE = 'social-network/dialog/SEND_MESSAGE';
 
-export type InitialStateType = typeof initialState;
-type dialogDataType = {
-    id: number,
-    name: string
-};
-type messageDataType = {
-    id: number,
-    message: string
-};
+import {InferActionTypes} from './redux-store';
 
 let initialState = {
     dialogData: [
@@ -34,7 +25,7 @@ const dialogReducer = (state = initialState,
         //         ...state,
         //         newMessageBody: action.body
         //     };
-        case SEND_MESSAGE :
+        case 'social-network/dialog/SEND_MESSAGE' :
             let body = action.newMessageBody;
             return {
                 ...state,
@@ -44,18 +35,36 @@ const dialogReducer = (state = initialState,
             return state;
     }
 };
-type ActionsType = sendMessageActionCreatorType;
-type sendMessageActionCreatorType = {
-    type: typeof SEND_MESSAGE,
-    newMessageBody: string
+export const actions = {
+    sendMessageActionCreator:(newMessageBody: string) => ({
+        type: 'social-network/dialog/SEND_MESSAGE',
+        newMessageBody
+    }) as const
 };
 
-export const sendMessageActionCreator = (newMessageBody: string): sendMessageActionCreatorType => ({
-    type: SEND_MESSAGE,
-    newMessageBody
-});
+// type ActionsType = sendMessageActionCreatorType;
+// type sendMessageActionCreatorType = {
+//     type: 'social-network/dialog/SEND_MESSAGE',
+//     newMessageBody: string
+// };
+//
+// export const sendMessageActionCreator = (newMessageBody: string): sendMessageActionCreatorType => ({
+//     type: 'social-network/dialog/SEND_MESSAGE',
+//     newMessageBody
+// });
 // export const updateNewMessageBodyActionCreator = (text) => (
 //     {type: UPDATE_NEW_MESSAGE_BODY, body: text}
 // );
 
 export default dialogReducer;
+
+type ActionsType = InferActionTypes<typeof actions>
+export type InitialStateType = typeof initialState;
+type dialogDataType = {
+    id: number,
+    name: string
+};
+type messageDataType = {
+    id: number,
+    message: string
+};

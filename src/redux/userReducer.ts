@@ -1,9 +1,8 @@
-import {usersAPI} from '../api/api';
 import {updateObjectInArray} from '../utils/helpers/objectHelper';
 import {UserType} from '../types/types';
-import {AppStateType, InferActionTypes} from './redux-store';
+import {BaseThunkType, InferActionTypes} from './redux-store';
 import {Dispatch} from 'redux';
-import {ThunkAction} from 'redux-thunk';
+import {usersAPI} from '../api/users -api';
 
 
 const FOLLOW = 'social-network/user/FOLLOW';
@@ -22,7 +21,6 @@ let initialState = {
     isFetching: false,
     followingInProgress: [] as Array<number>// array of users id
 };
-type InitialStateType = typeof initialState;
 
 const userReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -134,8 +132,6 @@ export const actions = {
         userId
     } as const)
 };
-type ActionsType = InferActionTypes<typeof actions>;
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>;
 
 export const getUsersThunkCreator = (page: number, pageSize: number): ThunkType => {
     return async (dispatch, getState) => {
@@ -175,3 +171,7 @@ export const unfollow = (userId: number): ThunkType => {
 };
 
 export default userReducer;
+
+type InitialStateType = typeof initialState;
+type ActionsType = InferActionTypes<typeof actions>;
+type ThunkType = BaseThunkType<ActionsType>;

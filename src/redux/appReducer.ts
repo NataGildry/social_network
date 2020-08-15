@@ -1,8 +1,6 @@
 import {getAuthUserData} from './authReducer';
-import {ThunkAction} from 'redux-thunk';
-import {AppStateType} from './redux-store';
-
-const SET_INITIALIZED = 'SET_INITIALIZED';
+import {BaseThunkType, InferActionTypes} from './redux-store';
+//const SET_INITIALIZED = 'social-network/app/SET_INITIALIZED';
 
 export type InitialStateType ={
     initialized: boolean
@@ -12,10 +10,11 @@ let initialState: InitialStateType = {
     initialized: false,
     //globalError: null
 };
+type ActionsType = InferActionTypes<typeof actions>
 
 const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case SET_INITIALIZED:
+        case 'social-network/app/SET_INITIALIZED':
             return {
                 ...state,
                 initialized: true
@@ -25,23 +24,27 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
     }
 };
 
-type ActionsType = InitializedSuccessActionType;
-type InitializedSuccessActionType = {
-    type: typeof SET_INITIALIZED
+export const actions = {
+    initializedSuccess:() => ({type: 'social-network/app/SET_INITIALIZED'}) as const
 };
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>;
-export const initializedSuccess = ():ActionsType => ({type: SET_INITIALIZED});
+
 // ----- initiolizeApp with PROMISE----
-// export const initiolizeApp = () => (dispatch) => {
+// export const initiolizeApp = () => (dispatch:any) => {
 //     let promise = dispatch(getAuthUserData());
 //     promise.then(() => {
-//             dispatch(initializedSuccess());
+//             dispatch(actions.initializedSuccess());
 //         }
 //     );
 // };
+// type ActionsType = InitializedSuccessActionType;
+// type InitializedSuccessActionType = {
+//     type: typeof SET_INITIALIZED
+// };
+//export const initializedSuccess = ():ActionsType => ({type: SET_INITIALIZED});
+type ThunkType = BaseThunkType<ActionsType>;
 export const initiolizeApp = ():ThunkType => async (dispatch,
                                                     getState) => {
     await dispatch(getAuthUserData());
-    dispatch(initializedSuccess());
+    dispatch(actions.initializedSuccess());
 };
 export default appReducer;

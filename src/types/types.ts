@@ -25,8 +25,11 @@ export type UserType = {
 };
 export type ProfileType = {
     userId: number,
+    aboutMe: string | null,
     lookingForAJob: boolean,
     lookingForAJobDescription: boolean,
     fullName: string,
     contacts: Array<ContactsType>,
-    photos: Array<PhotosType>};
+   //photos: Array<PhotosType>
+    photos: PhotosType
+};

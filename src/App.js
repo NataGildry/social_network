@@ -5,7 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import {BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 //import DialogsContainer from './components/Dialogs/DialogContainer';
 //import UsersContainer from './components/Users/UsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer2';
+import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
 import {connect, Provider} from 'react-redux';
