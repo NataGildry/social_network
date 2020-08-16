@@ -1,9 +1,10 @@
-import {actions} from '../../redux/dialogReducer';
+import {actions, dialogDataType, messageDataType} from '../../redux/dialogReducer';
 import Dialogs from './Dialogs';
 import {connect} from 'react-redux';
 import React from 'react';
 import {withAuthRedirect} from '../../hoc/withAuthRedirect';
 import {compose} from 'redux';
+import {AppStateType} from '../../redux/redux-store';
 
 
 // const DialogsContainer = () => {
@@ -34,26 +35,27 @@ import {compose} from 'redux';
 //
 //     );
 // }; =========> How Container Components work in general
+type MapStateToPropsType = {
+    dialogData: Array<dialogDataType>,
+    messageData: Array<messageDataType>
+};
+type MapDispatchPropsType = {
+    sendMessage: (newMessageBody: string) => void
+};
+type OwnPropsType = {
+    newMessageBody: string
+};
 
-let mapStateToProps = (state) => {
+export const mapStateToProps = (state: AppStateType) => {
     return {
         dialogData: state.dialogsPage.dialogData,
-        messageData: state.dialogsPage.messageData,
-        newMessageBody: state.dialogsPage.newMessageBody,
+        messageData: state.dialogsPage.messageData
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        //we used updateNewMessageBody for changing message text with each character
-        // updateNewMessageBody: (body) => {
-        //     let action = updateNewMessageBodyActionCreator(body);
-        //     dispatch(action);
-        // },
-        sendMessage: (newMessageBody) => {
-            dispatch(actions.sendMessageActionCreator(newMessageBody));
-        }
-    }
-};
-
-export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs);
+export default compose(connect<MapStateToPropsType,
+    MapDispatchPropsType,
+    OwnPropsType,
+    AppStateType>(mapStateToProps,
+    {sendMessage: actions.sendMessage}
+), withAuthRedirect)(Dialogs);

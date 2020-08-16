@@ -20,11 +20,15 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType,
                                                }) => {
     return (
         <form onSubmit={handleSubmit}>
-            {createField<LoginFormValuesKeysType>("Email", "email", [required], Input)}
-            {createField<LoginFormValuesKeysType>("Password", "password", [required], Input, {type: "password"})}
-            {createField<LoginFormValuesKeysType>(undefined, "rememberMe", null, Input, {type: "checkbox"}, "remember me")}
+            {createField<LoginFormValuesKeysType>("Email", "email",
+                [required], Input)}
+            {createField<LoginFormValuesKeysType>("Password", "password",
+                [required], Input, {type: "password"})}
+            {createField<LoginFormValuesKeysType>(undefined, "rememberMe",
+                null, Input, {type: "checkbox"}, "remember me")}
             {captchaUrl && <img src="captchaUrl"/>}
-            {captchaUrl && createField<LoginFormValuesKeysType>('Symbols from IMG', "captcha", [required], Input, {})}
+            {captchaUrl && createField<LoginFormValuesKeysType>('Symbols from IMG', "captcha",
+                [required], Input, {})}
             {error && <div className={styles.formSummaryError}>{error}</div>}
             <div>
                 <button>Login</button>
