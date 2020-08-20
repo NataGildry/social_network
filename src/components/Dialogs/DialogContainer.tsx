@@ -53,7 +53,7 @@ export const mapStateToProps = (state: AppStateType) => {
     }
 };
 
-export default compose(connect<MapStateToPropsType,
+export default compose<React.ComponentType>(connect<MapStateToPropsType,
     MapDispatchPropsType,
     OwnPropsType,
     AppStateType>(mapStateToProps,

@@ -12,7 +12,7 @@ import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
 import {initiolizeApp} from './redux/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
-import store from './redux/redux-store';
+import store, {AppStateType} from './redux/redux-store';
 import {withSuspense} from './hoc/withSuspense';
 
 //with simple LazyLoading
@@ -20,8 +20,14 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogCon
 //with SuspenseHOC
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 
-class App extends React.Component {
-    catchAllUnhandledErrors = (promiseRejectionEvent) => {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+    initiolizeApp: () => void
+};
+const SuspensedUsers = withSuspense(UsersContainer);
+
+class App extends React.Component<MapPropsType & DispatchPropsType> {
+    catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
 alert("error");
     };
     componentDidMount() {
@@ -65,7 +71,7 @@ alert("error");
                         {/*           <UsersContainer pageTitle={"smth"}/>*/}
                         {/*       }/>*/}
                         <Route path='/users'
-                               render={withSuspense(UsersContainer)}
+                               render={() => <SuspensedUsers/>}
                         />
                         <Route path='/login'
                                render={() =>
@@ -83,14 +89,14 @@ alert("error");
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 });
 
-let AppContainer = compose(withRouter,
+let AppContainer = compose<React.ComponentType>(withRouter,
     connect(mapStateToProps, {initiolizeApp}))(App);
 
-const MainApp = () => {
+const MainApp: React.FC = () => {
     return (
         // <React.StrictMode>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
