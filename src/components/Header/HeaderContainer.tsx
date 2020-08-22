@@ -1,9 +1,21 @@
 import React, {Component} from 'react';
-import Header from './Header';
 import {connect} from 'react-redux';
 import {logout} from '../../redux/authReducer';
+import {AppStateType} from "../../redux/redux-store";
+import {Header} from "./Header";
 
-class HeaderContainer extends Component {
+
+type MapStateToPropsType = {
+    isAuth: boolean
+    login: string | null
+};
+type MapDispatchToPropsType = {
+    logout: () => void
+};
+type OwnPropsType = {};
+type PropsType =  MapStateToPropsType & MapDispatchToPropsType & OwnPropsType;
+
+class HeaderContainer extends Component<PropsType> {
 
         //code without THUNK --- getAuthUserData is moved to App component
         // authAPI.getMyProfile()
@@ -30,9 +42,10 @@ class HeaderContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     isAuth: state.auth.isAuth,
     login: state.auth.login
 });
 
-export default connect(mapStateToProps, {logout})(HeaderContainer);
+export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>
+(mapStateToProps, {logout})(HeaderContainer);

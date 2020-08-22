@@ -44,5 +44,4 @@ export function createField<FormKeysType extends string>(placeholder: string | u
                component={component}
                {...props}/> {text}
     </div>
-
 }

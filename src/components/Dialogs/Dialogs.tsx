@@ -1,9 +1,9 @@
 import React from 'react';
 import d from './Dialogs.module.css';
-import DialogItem from './Dialog/DialogItem';
 import Message from './Message/Message';
 import {dialogDataType, messageDataType} from "../../redux/dialogReducer";
 import {AddMessageReduxForm} from "./MessageForm/MessageForm";
+import {DialogItem} from "./Dialog/DialogItem";
 
 type PropsType = {
     sendMessage: any,

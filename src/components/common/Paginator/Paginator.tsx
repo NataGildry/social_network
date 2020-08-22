@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
+// @ts-ignore
 import styles from '../Paginator/Paginator.module.css';
-import cn from "classnames";
+import cn from 'classnames';
 
 type Props = {
     totalItemsCount: number,
     pageSize: number,
-    currentPage: number,
-    onPageChange: (pageNumber:number) => void,
+    currentPage?: number,
+    onPageChange?: (pageNumber:number) => void,
     portionSize?: number
 };
 
@@ -14,7 +15,7 @@ let Paginator: React.FC<Props> = ({
                                       totalItemsCount,
                                       pageSize,
                                       currentPage,
-                                      onPageChange,
+                                      onPageChange = () => {},
                                       portionSize = 10
                                   }) => {
     let pagesCount = Math.ceil(totalItemsCount / pageSize);

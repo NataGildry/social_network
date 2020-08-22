@@ -21,7 +21,7 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
             let newText = action.newPostText;
             return {
                 ...state,
-                posts: [...state.posts, {id: 4, message: newText}]
+                posts: [...state.posts, {id: state.posts.length + 1, message: newText}]
             }  as InitialStateType;
         case 'social-network/profile/SET_USER_PROFILE' :
             return {
@@ -61,12 +61,12 @@ export const actions = {
     setUserStatus:(status: string | null) => ({type: 'social-network/profile/SET_STATUS', status}) as const
 };
 
-export const getUserProfile = (userId: number): ThunkType =>
+export const getUserProfile = (userId:  number): ThunkType =>
     async (dispatch, getState) => {
     let data = await usersAPI.getProfile(userId);
     dispatch(actions.setUserProfile(data));
 };
-export const getUserStatus = (userId: number): ThunkType =>
+export const getUserStatus = (userId:  number): ThunkType =>
     async (dispatch,
            getState: any) => {
         let data = await profileAPI.getStatus(userId);

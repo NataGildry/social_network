@@ -1,7 +1,13 @@
 import React from 'react';
+import {ProfileType} from '../../../types/types';
 
+type PropsType ={
+    profile: ProfileType
+    isOwner: boolean
+    goToEditMode: () => void
+};
 
-const ProfileData = ({profile, isOwner, goToEditMode}) => {
+const ProfileData: React.FC<PropsType> = ({profile, isOwner, goToEditMode}) => {
     return (
         <div>
             {isOwner && <div><button onClick={goToEditMode}>edit</button></div> }
@@ -15,7 +21,7 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
                 </div>
                 {profile.lookingForAJob &&
                 <div>
-                    <b>My professiional skills</b> : {profile.lookingForAJobDescription}
+                    <b>My professional skills</b> : {profile.lookingForAJobDescription}
                 </div>}
                 <p>{profile.aboutMe}</p>
             </div>

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import h from './Header.module.css';
 import {NavLink} from 'react-router-dom';
 
-const Header = (props) => {
+type PropsType = {
+    isAuth: boolean
+    login: string | null
+    logout: () => void
+};
+
+export const Header: FC<PropsType> = (props) => {
     return (
         <div className={h.header}>
             <img
@@ -17,4 +23,3 @@ const Header = (props) => {
     );
 };
 
-export default Header;

@@ -2,8 +2,7 @@ import React, {ChangeEvent, Component} from 'react';
 
 type PropsType = {
     status: string,
-    updateUserStatus: (newStatus:string) => void,
-
+    updateUserStatus: (newStatus: string) => void,
 };
 
 type StateType = {
@@ -36,7 +35,7 @@ class Status extends Component<PropsType, StateType> {
         });
     };
 
-    componentDidUpdate(prevProps:PropsType, prevState: StateType) {
+    componentDidUpdate(prevProps: PropsType, prevState: StateType) {
         if (prevProps.status !== this.props.status) {
             this.setState({
                 status: this.props.status

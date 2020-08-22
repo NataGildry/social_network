@@ -1,8 +1,19 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPostsContainer from './MyPosts/MyPostContainer';
+import {ProfileType} from '../../types/types';
 
-const Profile = (props) => {
+type PropsType = {
+    savePhoto: (file: File) => void
+    isOwner: boolean
+    profile: ProfileType | null
+    status: string | null
+    updateUserStatus: (status: string) => void
+    saveProfile: (profile: ProfileType) => Promise<any>
+    //addPost: (newPostText: string) => Promise<any>
+};
+
+const Profile: React.FC<PropsType> = (props) => {
     return (
         <div>
             <ProfileInfo
@@ -12,7 +23,7 @@ const Profile = (props) => {
                 status={props.status}
                 updateUserStatus={props.updateUserStatus}
                 saveProfile={props.saveProfile}/>
-            <MyPostsContainer/>
+            <MyPostsContainer />
         </div>
     );
 };
