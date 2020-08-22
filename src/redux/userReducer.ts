@@ -3,6 +3,7 @@ import {UserType} from '../types/types';
 import {BaseThunkType, InferActionTypes} from './redux-store';
 import {Dispatch} from 'redux';
 import {usersAPI} from '../api/users -api';
+import {ResponsesType} from "../api/api";
 
 
 const FOLLOW = 'social-network/user/FOLLOW';
@@ -13,7 +14,7 @@ const SET_TOTAL_USER_COUNT = 'social-network/user/SET_TOTAL_USER_COUNT';
 const TOGGLE_IS_FETCHING = 'social-network/user/TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'social-network/user/TOGGLE_IS_FOLLOWING_PROGRESS';
 
-let initialState = {
+const initialState = {
     users: [] as Array<UserType>,
     pageSize: 10,
     totalUsersCount: 0,
@@ -145,17 +146,19 @@ export const getUsersThunkCreator = (page: number, pageSize: number): ThunkType 
 };
 const _followUnfollowFlow = async (dispatch: Dispatch<ActionsType>,
                                    userId: number,
-                                   apiMethod: any,
+                                   apiMethod: (userId:number) => Promise<ResponsesType>,
                                    actionCreator: (userId: number) => ActionsType) => {
     dispatch(actions.toggleFollowingInProgress(true, userId));
     let response = await apiMethod(userId);
-    dispatch(actions.toggleFollowingInProgress(false, userId));
-    if (response.data.resultCode === 0) {
+
+    if (response.resultCode === 0) {
         dispatch(actionCreator(userId));
+        dispatch(actions.toggleFollowingInProgress(false, userId));
         return Promise.resolve('Followed / unfollowed')
     } else {
         return Promise.reject('Server error')
     }
+
 };
 
 export const follow = (userId: number): ThunkType => {
@@ -172,6 +175,6 @@ export const unfollow = (userId: number): ThunkType => {
 
 export default userReducer;
 
-type InitialStateType = typeof initialState;
-type ActionsType = InferActionTypes<typeof actions>;
-type ThunkType = BaseThunkType<ActionsType>;
+export type InitialStateType = typeof initialState;
+export type ActionsType = InferActionTypes<typeof actions>;
+export type ThunkType = BaseThunkType<ActionsType>;
