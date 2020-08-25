@@ -42,4 +42,17 @@ test('unfollow success', () => {
     expect(newState.users[2].followed).toBeTruthy();
     expect(newState.users[3].followed).toBeFalsy();
 });
+test('set current page', () => {
+    const newState = userReducer(state, actions.setCurrentPage(12));
+
+    expect(newState.currentPage).toBe(12);
+});
+test('toggle is fetching', () => {
+    const newState = userReducer(state, actions.toggleIsFetching(true));
+    expect(newState.isFetching).toBeTruthy();
+});
+test('set total users count', () => {
+    const newState = userReducer(state, actions.setTotalUsersCount(100));
+    expect(newState.totalUsersCount).toBe(100);
+});
 

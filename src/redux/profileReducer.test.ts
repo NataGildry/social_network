@@ -1,5 +1,4 @@
 import profileReducer, {actions} from './profileReducer';
-import React from 'react';
 import {ProfileType} from "../types/types";
 
 let state = {
