@@ -3,28 +3,27 @@ import './App.css';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import {BrowserRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
-//import DialogsContainer from './components/Dialogs/DialogContainer';
-//import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
+import {Login} from './components/Login/Login';
 import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
 import {initiolizeApp} from './redux/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
 import store, {AppStateType} from './redux/redux-store';
 import {withSuspense} from './hoc/withSuspense';
+import {UsersPagePropsType} from "./components/Users/UsersContainer";
 
 //with simple LazyLoading
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogContainer'));
 //with SuspenseHOC
-const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const UsersPage = React.lazy(() => import('./components/Users/UsersContainer'));
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
     initiolizeApp: () => void
 };
-const SuspensedUsers = withSuspense(UsersContainer);
+const SuspensedUsers = withSuspense<UsersPagePropsType>(UsersPage);
 
 class App extends React.Component<MapPropsType & DispatchPropsType> {
     catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
@@ -71,7 +70,7 @@ alert("error");
                         {/*           <UsersContainer pageTitle={"smth"}/>*/}
                         {/*       }/>*/}
                         <Route path='/users'
-                               render={() => <SuspensedUsers/>}
+                               render={() => <SuspensedUsers pageTitle={'USERS'}/>}
                         />
                         <Route path='/login'
                                render={() =>

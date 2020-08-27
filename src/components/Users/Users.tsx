@@ -1,29 +1,59 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
-import {UserType} from '../../types/types';
-import {UsersSearchForm} from "./UsersSearchForm";
-import {FilterType} from "../../redux/userReducer";
+import {UsersSearchForm} from './UsersSearchForm';
+import {FilterType, getUsersThunkCreator} from '../../redux/userReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers,
+    getUsersFilter
+} from '../../redux/UsersSelectors';
 
 type PropsType = {
-    totalUsersCount: number,
-    pageSize: number,
-    currentPage: number,
-    onPageChange: (pageNumber:number) => void,
-    users: Array<UserType>,
-    followingInProgress: Array<number>,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void,
-    onFilterChanged: (filter: FilterType) => void
 };
 
-let Users: React.FC<PropsType> = ({currentPage,
-                                      onPageChange,
-                                      totalUsersCount,
-                                      pageSize,
-                                      users,
-                                      onFilterChanged,
-                                      ...props}) => {
+export const Users: React.FC<PropsType> = ({...props}) => {
+    const users = useSelector(getUsers);
+    const totalUsersCount = useSelector(getTotalUsersCount);
+    const pageSize = useSelector(getPageSize);
+    const currentPage = useSelector(getCurrentPage);
+    const filter = useSelector(getUsersFilter);
+    const followingInProgress = useSelector(getFollowingInProgress);
+
+    // componentDidMount() {
+    //     const {currentPage, pageSize, filter} = this.props;
+    //     this.props.getUsers(currentPage, pageSize, filter);
+    //     //Code without THUNK
+    //     // this.props.toggleIsFetching(true);
+    //     // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+    //     //     this.props.toggleIsFetching(false);
+    //     //     this.props.setUsers(data.items);
+    //     //     this.props.setTotalUsersCount(data.totalCount);
+    //     // })
+    // }
+    // method to replace componentDidMount
+    useEffect(() => {
+        dispatch(getUsersThunkCreator(currentPage, pageSize, filter));
+    }, []);
+
+    const dispatch = useDispatch();
+
+    const onPageChange = (pageNumber:number) => {
+        dispatch(getUsersThunkCreator(pageNumber, pageSize, filter));
+    };
+    const onFilterChanged = (filter: FilterType) => {
+        dispatch(getUsersThunkCreator(1, pageSize, filter));
+    };
+    const follow = (userId: number) => {
+        dispatch(follow(userId));
+    };
+    const unfollow = (userId: number) => {
+        dispatch(unfollow(userId));
+    };
     return <div>
         <UsersSearchForm  onFilterChanged={onFilterChanged}/>
         <Paginator currentPage={currentPage} onPageChange={onPageChange} pageSize={pageSize}
@@ -31,8 +61,8 @@ let Users: React.FC<PropsType> = ({currentPage,
         <div>
             {
                 users.map(u => <User
-                    user={u} followingInProgress={props.followingInProgress}
-                    unfollow={props.unfollow} follow={props.follow}
+                    user={u} followingInProgress={followingInProgress}
+                    unfollow={unfollow} follow={follow}
                     key={u.id}/>
                 )
             }
