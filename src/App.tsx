@@ -12,7 +12,7 @@ import {initiolizeApp} from './redux/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
 import store, {AppStateType} from './redux/redux-store';
 import {withSuspense} from './hoc/withSuspense';
-import {UsersPagePropsType} from "./components/Users/UsersContainer";
+import {UsersPagePropsType} from './components/Users/UsersContainer';
 
 //with simple LazyLoading
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogContainer'));

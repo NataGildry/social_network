@@ -12,9 +12,12 @@ import {
     getUsers,
     getUsersFilter
 } from '../../redux/UsersSelectors';
+import {useHistory} from 'react-router-dom';
+import * as queryString from 'querystring';
 
-type PropsType = {
-};
+
+type PropsType = {};
+type QueryParamsType = {term?: string; page?:string; friend?:string};
 
 export const Users: React.FC<PropsType> = ({...props}) => {
     const users = useSelector(getUsers);
@@ -23,6 +26,7 @@ export const Users: React.FC<PropsType> = ({...props}) => {
     const currentPage = useSelector(getCurrentPage);
     const filter = useSelector(getUsersFilter);
     const followingInProgress = useSelector(getFollowingInProgress);
+
 
     // componentDidMount() {
     //     const {currentPage, pageSize, filter} = this.props;
@@ -37,12 +41,46 @@ export const Users: React.FC<PropsType> = ({...props}) => {
     // }
     // method to replace componentDidMount
     useEffect(() => {
-        dispatch(getUsersThunkCreator(currentPage, pageSize, filter));
+        const {search} = history.location;
+        const parsed = queryString.parse(search.substring(1)) as QueryParamsType;
+
+        let actualPage = currentPage;
+        let actualFilter = filter;
+
+        if (parsed.page) actualPage = Number(parsed.page);
+
+        if (parsed.term) actualFilter = {...actualFilter, term: parsed.term as string};
+
+        switch (parsed.friend) {
+            case "null":
+                actualFilter = {...actualFilter, friend: null};
+                break;
+            case "true":
+                actualFilter = {...actualFilter, friend: true};
+                break;
+            case "false":
+                actualFilter = {...actualFilter, friend: false};
+                break;
+        }
+        dispatch(getUsersThunkCreator(actualPage, pageSize, actualFilter));
     }, []);
 
-    const dispatch = useDispatch();
+    useEffect(() => {
+        const query: QueryParamsType = {};
+        if (!!filter.term) query.term = filter.term;
+        if (filter.friend !== null) query.friend = String(filter.friend);
+        if (currentPage !== 1) query.page = String(currentPage);
 
-    const onPageChange = (pageNumber:number) => {
+        history.push({
+            pathname: '/users',
+            search: queryString.stringify(query)
+        })
+    }, [filter, currentPage]);
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const onPageChange = (pageNumber: number) => {
         dispatch(getUsersThunkCreator(pageNumber, pageSize, filter));
     };
     const onFilterChanged = (filter: FilterType) => {
@@ -55,7 +93,7 @@ export const Users: React.FC<PropsType> = ({...props}) => {
         dispatch(unfollow(userId));
     };
     return <div>
-        <UsersSearchForm  onFilterChanged={onFilterChanged}/>
+        <UsersSearchForm onFilterChanged={onFilterChanged}/>
         <Paginator currentPage={currentPage} onPageChange={onPageChange} pageSize={pageSize}
                    totalItemsCount={totalUsersCount}/>
         <div>
